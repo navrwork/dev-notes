@@ -1,2 +1,3 @@
-# DevNotes
-Dev notes for reference
+# Dev Notes
+
+* [Maven Notes](https://github.com/navrwork/dev-notes/blob/main/maven/README.md)
