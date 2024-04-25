@@ -39,4 +39,12 @@ A sequence of goals constitutes a phase and each goal executes a specific task. 
 * install:install – install phase
 * jar:jar and war:war – package phase
 
-
+## Maven Commands
+* **_$ mvn --version_** : Display version information
+* **_$ mvn clean deploy_** : Copies the final package to the remote repository for sharing with other developers and projects.
+* **_$ mvn clean install_** : The command installs the package into the local repository, for use as a dependency in other projects locally.
+* **_$ mvn clean install -Dmaven.test.skip=true_** : Same as "clean install". However, doesn't compile or execute the tests.
+* **_$ mvn clean install -DskipTests_** : Same as "clean install". Compiles the tests but the tests are NOT executed.
+* **_$ mvn surefire-report:report_** : Generates surefire report.
+* **_$ mvn clean jacoco:prepare-agent install jacoco:report_** : Generates JaCoCo code coverage report.
+* **_$ mvn versions:set -DnewVersion=<your_new_version_here>_** : A flexible way to set pom versions, multi-modules projects included, is Versions Maven Plugin. It will adjust all pom versions, parent versions and children versions in a multi-module project.
