@@ -27,7 +27,7 @@
 * Use Eclipse MAT tool to analyze the dump file.
 	
 ##### Command Line Reference
-    Use jps command to identify the process. Use option "-l" to 
+    Use jps command to identify the process. "-l" option displays the full package name for the application's main class or the full path name to the application's JAR file.
         $ jps -l
         16548
         23276 org.jetbrains.jps.cmdline.Launcher
