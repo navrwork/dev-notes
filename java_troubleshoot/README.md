@@ -1,4 +1,32 @@
-# Java Troubleshooting Notes
+# Java Troubleshooting
+
+## Java Monitoring Tools
+* Java VisualVM (jvisualvm.exe)
+  * VisualVM is an all-in-one tool for diagnosing and troubleshooting Java applications. It is currently only distributed as a standalone tool at GitHub.
+  * Features
+    * Display Local And Remote Java Processes
+    * Display Process Configuration And Environment
+    * Monitor Process Performance And Memory
+    * Visualize Process Threads
+    * Profile Performance And Memory Usage
+    * Take And Display Thread Dumps, Take And Browse Heap Dumps
+    * Analyze Core Dumps
+    * Analyze Applications Offline
+  * Note: Overhead can be an issue in production when features like CPU and memory profiler are triggered by the user.
+  * Starting VisualVM from commandline:
+    * $ .\visualvm.exe --jdkhome "C:\Program Files\Microsoft\jdk-17.0.10.7-hotspot" --userdir "C:\Users\userdir"
+  * Reference
+    * https://visualvm.github.io/
+    * https://www.baeldung.com/visualvm-jmx-remote
+* JConsole (jconsole.exe)
+  * Defines the JMX graphical tool, jconsole, for monitoring and managing a running application.
+  * JConsole provides basic monitoring of the JVM run-time along with key resources such as CPU, memory and threads.  It consists of several tabs that summarize the health of JVM memory, threads, classes, virtual machine and MBeans which are exposed via the standard JMX console.
+  * Note: Oracle recommends that JConsole only be deployed in dev and test environments due to the overhead it can introduce on the application.
+  * Reference
+    * [Module jdk.jconsole](https://docs.oracle.com/en/java/javase/17/docs/api/jdk.jconsole/module-summary.html)
+* Java Mission Control (jmc.exe)
+* Diagnostic Command Tool (jcmd.exe)
+* [Java Flight Recoder Monitoring](https://www.baeldung.com/java-flight-recorder-monitoring)
 
 ## Troubleshoot Memory/Heap Issues
 ### Reference
