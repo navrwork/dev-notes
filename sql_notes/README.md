@@ -1,7 +1,10 @@
 # SQL Notes
 
 ## Reference
+* [SQL Tutorial | w3schools.com](https://www.w3schools.com/sql/)
+* [SQL JOIN Examples | learnsql.com](https://learnsql.com/blog/sql-join-examples-with-explanations/)
 * [SQL Aggregate Functions | learnsql.com](https://learnsql.com/blog/aggregate-functions/)
+
 
 ## SQL Aggregate Functions
 * Some commonly used aggregate functions: SUM(), COUNT(), AVG(), MIN(), MAX()
