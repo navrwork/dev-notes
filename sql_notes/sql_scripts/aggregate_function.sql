@@ -46,8 +46,7 @@ ORDER BY COUNT(*);
 --
 -- Find id, salary and department of the employee who earns the maximum per each department
 --
-SELECT 
-	e.EmployeeID, e.EmployeeName, e.Department, e.Salary
+SELECT e.EmployeeID, e.EmployeeName, e.Department, e.Salary
 FROM Employee e
 WHERE e.Salary = (
 	SELECT MAX(Salary)
@@ -55,3 +54,14 @@ WHERE e.Salary = (
 	WHERE Department = e.Department
 );
 
+
+--
+-- Find the ID, name, and salary of the employee with the second maximum salary
+--
+SELECT e.EmplyeeID, e.EmployeeName, e.Salary 
+FROM Employee 
+WHERE Salary = (
+	SELECT MAX(Salary) 
+	FROM Employee 
+	WHERE Salary < (SELECT MAX(Salary) FROM Employee)
+);
