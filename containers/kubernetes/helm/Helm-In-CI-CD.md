@@ -99,3 +99,85 @@ helm rollback myapp 1 --namespace prod --wait
 ```
 
 The rollback revision (`1` here) is an example; choose the appropriate revision from `helm history`. CI/CD systems differ, but these Helm commands are commonly run as pipeline steps. Keep cluster credentials and sensitive configuration in the platform's secret-management facilities rather than committing them to the chart or values files.
+
+## Helm Chart and the Application Code
+
+A Helm chart generally does not contain your application's source code or runtime dependencies. It focuses on defining the Kubernetes resources needed to deploy and manage the application, along with configuration options for different environments.
+
+Think of the layers like this:
+
+```text
+Application Source Code
+        ↓
+Docker Build
+        ↓
+Container Image
+        ↓
+Image stored in Registry
+(ECR, ACR, Docker Hub, GCR)
+        ↓
+Helm Chart
+        ↓
+Kubernetes Cluster
+```
+
+### What's in a Helm chart?
+
+Typically:
+```text
+mychart/
+├── Chart.yaml
+├── values.yaml
+├── templates/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── ingress.yaml
+```
+
+Example:
+```yaml
+# Chart.yaml
+image:
+  repository: mycompany/catalog-service
+  tag: 1.4.0
+```
+
+The chart only contains a reference to the Docker image and not the actual code.:
+```yaml
+image: mycompany/catalog-service:1.4.0
+```
+
+### Where is the application code?
+
+The application code is built into a Docker image and stored in a container registry. The Helm chart references that image, allowing Kubernetes to pull and run it. The chart can be versioned and deployed independently of the application code, enabling consistent deployments across environments.
+
+For example:
+
+```text
+Docker Image
+└── catalog-service:1.4.0
+    ├── app.jar
+    ├── libraries
+    ├── configs
+    └── runtime
+```
+
+
+When Helm deploys the chart:
+```sh
+helm install catalog ./catalog-chart
+```
+
+Kubernetes creates a pod, and that pod pulls:
+```text
+mycompany/catalog-service:1.4.0
+```
+
+### What about application dependencies?
+
+Dependencies are typically handled at the Docker image level. The Helm chart does not include the application’s runtime dependencies; it only defines how to deploy the application in Kubernetes. The Docker image should contain all necessary dependencies for the application to run.
+
+
+## Summary
+
+A Helm chart is usually the deployment blueprint, while the Docker image contains the actual application code and runtime dependencies.
