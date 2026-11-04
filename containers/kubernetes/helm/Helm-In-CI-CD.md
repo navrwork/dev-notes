@@ -51,23 +51,25 @@ The chart must exist before CI can validate or package it. Typically, the reposi
 
 ## Helm in CI
 
-Continuous Integration (CI) typically validates and packages a chart after a change. It does not usually need access to a Kubernetes cluster. A typical chart pipeline might run:
+Continuous Integration (CI) typically validates and packages a chart after a change. It does not usually need access to a Kubernetes cluster. A typical chart pipeline might run the following commands:
 
-```bash
-helm dependency build ./charts/mychart
-helm lint ./charts/mychart
-helm template myapp-ci ./charts/mychart -f ./charts/mychart/values-dev.yaml --namespace ci
-helm package ./charts/mychart
-helm push ./mychart-0.1.0.tgz oci://registry.example.com/helm-charts
-```
+| Step                | Command                                                                                      | Purpose                                                                                                                        |
+|---------------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Build dependencies  | `helm dependency build ./charts/mychart`                                                     | Downloads dependencies declared in `Chart.yaml`, using `Chart.lock` when present.                                              |
+| Lint the chart      | `helm lint ./charts/mychart`                                                                 | Checks the chart for common structural and configuration issues.                                                               |
+| Render templates    | `helm template myapp-ci ./charts/mychart -f ./charts/mychart/values-dev.yaml --namespace ci` | Renders manifests locally with development values; it does not deploy them to a cluster.                                       |
+| Package the chart   | `helm package ./charts/mychart`                                                              | Creates a versioned chart archive using the chart name and version in `Chart.yaml`.                                            |
+| Publish the package | `helm push ./mychart-0.1.0.tgz oci://registry.example.com/helm-charts`                       | Uploads the archive to an OCI registry. Replace the example archive name and registry with the actual package and destination. |
 
-These commands build chart dependencies, check chart structure, render manifests to catch template errors, package the chart, and publish the versioned package to an OCI registry. Replace the chart path, values file, version, and registry with those used by your project. The chart version in the package must match its `version` in `Chart.yaml`.
+The chart version in the package is taken from its `version` in `Chart.yaml`.
 
 The CI job should authenticate to the registry using credentials stored in the CI platform's secret store. It should publish a chart only after the required checks pass.
 
 ## Helm in CD
 
-Continuous Delivery/Deployment (CD) takes a validated chart version and deploys it to the target cluster. The runner must have Helm installed and authenticated Kubernetes access for the intended cluster. A typical deployment command is:
+CI pushes the versioned chart archive to the OCI registry; CD then pulls the selected chart version from that registry and deploys it to the target cluster. For example, CI might publish chart version `0.1.0`, which CD deploys with production-specific values.
+
+The CD runner needs access to both the chart registry (to pull the chart) and the target Kubernetes cluster (to install or upgrade the release). A typical deployment command is:
 
 ```bash
 helm upgrade --install myapp \
