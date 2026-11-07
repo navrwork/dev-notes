@@ -67,4 +67,4 @@ The diagram shows the main responsibilities; real clusters may run components in
 5. The node's kubelet notices its assigned Pod and asks the CRI runtime to pull the image if needed and start the container. Networking is configured for the Pod.
 6. The kubelet reports status. Controllers continue reconciling so the cluster moves toward the requested state—for example, replacing a failed Pod.
 
-Kubernetes manages workloads and tracks node health and capacity, but it does not usually provision or maintain the underlying machines or their operating systems. Cloud platforms or infrastructure-management tools typically handle that part. For the physical server → VM/node → Pod relationship, see [Containers FAQ](../Containers-FAQ.md).
+Kubernetes manages workloads and tracks node health and capacity, but it does not usually provision or maintain the underlying machines or their operating systems. Cloud platforms or infrastructure-management tools typically handle that part. For the physical server → VM/node → Pod relationship, see [Containers FAQ](../Container-FAQ.md).

@@ -70,6 +70,8 @@ my-app-chart/
 - **`charts/`** — optional dependencies on other charts.
 - **`templates/_helpers.tpl`** — commonly used for reusable named template snippets; it does not render as a Kubernetes resource on its own.
 
+For details on `Chart.yaml` fields, values precedence, templates, and dependencies, see [Helm Chart Structure](Helm-Chart-Structure.md).
+
 ## A Single-Command Example
 
 Without Helm, installing an application may mean applying several Kubernetes manifest files individually. With a chart available in an OCI registry, you can install it as a release with one command:
