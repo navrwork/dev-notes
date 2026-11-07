@@ -450,6 +450,22 @@ If a Pod is not ready, inspect its details and events with `kubectl describe pod
 
 The following sequence shows a typical chart and release workflow. Replace the sample chart paths and names with your own.
 
+This local-chart lifecycle does not include `helm package`: Helm can install or upgrade directly from a chart directory such as `./mychart`. Use `helm package ./mychart` when you need a versioned `.tgz` archive to distribute or publish to a chart registry; CI/CD workflows commonly package and publish charts for later deployment.
+
+Packaging is optional, not a required step before every install. If you install from the local chart directory, install directly. If you want to install the packaged artifact, package it first and install the `.tgz` file:
+
+```mermaid
+flowchart TD
+    Chart["Chart directory<br/>./mychart"]
+    Direct["Install directly<br/>helm install myapp ./mychart"]
+    Package["Optional: package chart<br/>helm package ./mychart"]
+    Archive["Versioned .tgz archive"]
+    InstallArchive["Install packaged chart<br/>helm install myapp mychart-1.2.0.tgz"]
+
+    Chart --> Direct
+    Chart --> Package --> Archive --> InstallArchive
+```
+
 **How installation works:** Helm renders chart templates into resource definitions and sends create requests to the Kubernetes API server. The API server validates and stores the requested resources in cluster state; it does not itself run the application. Kubernetes controllers then act on those resources—for example, a Deployment controller creates a ReplicaSet, which creates Pods. The scheduler assigns Pods to nodes, and each node's kubelet and container runtime start their containers. In everyday language, `helm install` installs the chart's resources, but Helm does not directly create or run Pods.
 
 ```bash
@@ -463,6 +479,10 @@ helm lint ./mychart
 # Optional: render the chart locally with dev values to review the Kubernetes
 # resources Helm would submit. This does not contact the cluster or install them.
 helm template myapp ./mychart --namespace dev -f ./mychart/values-dev.yaml
+
+# Optional: package the chart as a versioned archive for distribution or publishing.
+# Uncomment when you need an archive; direct install from ./mychart needs no package.
+# helm package ./mychart
 
 # Install the chart as release "myapp" in namespace "dev".
 # Helm renders resource definitions and sends create requests to the API server.
