@@ -138,7 +138,7 @@ helm lint ./mychart
 helm template myapp ./mychart --namespace dev -f ./mychart/values-dev.yaml
 ```
 
-Install the chart as a release:
+Install the chart as a release. Helm combines the files in `templates/` with the chart defaults in `values.yaml` and the supplied `values-dev.yaml`, then renders them into Kubernetes resource definitions:
 
 ```bash
 helm install myapp ./mychart \
@@ -147,4 +147,4 @@ helm install myapp ./mychart \
   -f ./mychart/values-dev.yaml
 ```
 
-Helm renders the templates and sends the resulting resource requests to the Kubernetes API server. Kubernetes then stores and reconciles those resources; controllers create dependent resources such as Pods. See [Helm Overview](Helm-Overview.md) for the introduction and [Helm Cheat Sheet](Helm-CheatSheet.md) for common commands.
+Helm sends the rendered resource definitions to the Kubernetes API server. The API server validates and records them; Kubernetes controllers then reconcile the resources and create dependent resources such as Pods. See [Helm Overview](Helm-Overview.md) for the introduction and [Helm Cheat Sheet](Helm-CheatSheet.md) for common commands.
